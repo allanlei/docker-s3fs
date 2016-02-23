@@ -13,8 +13,7 @@ if [ -n "$PARALLEL_COUNT" ]; then OPTS="$OPTS -oparallel_count=$PARALLEL_COUNT";
 
 if [ "$#" -eq 1 ];
 then
-    mkdir -p /mnt/$@
-    exec s3fs -f "$OPTS" "$@" "/mnt/$@"
+    s3fs -f $@ /mnt $OPTS
 else
-    exec s3fs "$OPTS" "$@"
+    s3fs -f $@ $OPTS
 fi
