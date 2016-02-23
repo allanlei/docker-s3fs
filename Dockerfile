@@ -22,5 +22,6 @@ RUN         cd /src/s3fs-fuse && \
                 libstdc++ curl fuse libxml2 && \
             apk del .builddeps && \
             rm -rf /src/s3fs-fuse
+RUN         mkdir -p /tmp /mnt
 VOLUME      ["/mnt"]
-ENTRYPOINT  ["s3fs", "-f", "/mnt"]
+ENTRYPOINT  ["s3fs", "-f", "-ouse_cache=/tmp", "/mnt"]
