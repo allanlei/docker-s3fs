@@ -23,4 +23,4 @@ RUN         cd /src/s3fs-fuse && \
             apk del .builddeps && \
             rm -rf /src/s3fs-fuse
 VOLUME      ["/mnt"]
-ENTRYPOINT  ["s3fs", "-f"]
+ENTRYPOINT  ["s3fs", "-f", "/mnt"]
