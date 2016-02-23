@@ -22,4 +22,4 @@ RUN         cd /src/s3fs-fuse && \
                 libstdc++ curl fuse libxml2 && \
             apk del .builddeps && \
             rm -rf /src/s3fs-fuse
-ENTRYPOINT  ["s3fs"]s
+ENTRYPOINT  ["s3fs"]
