@@ -1,18 +1,25 @@
-FROM        debian:jessie
+FROM        alpine:3.3
 MAINTAINER  Allan Lei <allanlei@helveticode.com>
 
-ENV         VERSION 1.78
+ENV         VERSION 1.79
 
-RUN         apt-get update && \
-            apt-get install -y curl build-essential git libfuse-dev libcurl4-openssl-dev libxml2-dev mime-support automake libtool pkg-config libssl-dev
+RUN         apk --no-cache add --virtual .builddeps \
+                build-base \
+                automake \
+                autoconf \
+                fuse-dev \
+                curl-dev \
+                libxml2-dev \
+                openssl-dev
 
-RUN         cd $(mktemp -d) && \
-            curl -L https://github.com/s3fs-fuse/s3fs-fuse/archive/v$VERSION.tar.gz | tar xvz --strip-components 1 && \
+COPY        src/s3fs-fuse /src/s3fs-fuse
+RUN         cd /src/s3fs-fuse && \
             ./autogen.sh && \
             ./configure --with-openssl && \
             make && \
-            make install
-
-RUN         apt-get autoremove -y && \
-            apt-get autoclean -y
-CMD         ["s3fs"]
+            make install && \
+            apk --no-cache add \
+                libstdc++ curl fuse libxml2 && \
+            apk del .builddeps && \
+            rm -rf /src/s3fs-fuse
+ENTRYPOINT  ["s3fs"]s
